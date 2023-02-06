@@ -1,7 +1,9 @@
 /*
 FIX ME (types) 😭
 */
-export const ensureAuthenticated = (req: any, res: any, next: any) => {
+import { Request, Response } from "express";
+
+export const ensureAuthenticated = (req: Request, res: Response, next: any) => {
   if (req.isAuthenticated()) {
     return next();
   }
