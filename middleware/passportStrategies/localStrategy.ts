@@ -38,7 +38,7 @@ passport.serializeUser(function (user: Express.User, done: (err: any, id?: numbe
 });
 
 /*
-FIX ME (types) 😭
+FIX ME (ID is still any) 😭
 */
 passport.deserializeUser(function (id: any, done: (err: any, user?: Express.User | false | null) => void) {
   let user = getUserById(id);
