@@ -1,6 +1,6 @@
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
-import { getUserByEmailIdAndPassword, getUserById} from "../../controllers/userController";
+import { getUserByEmailIdAndPassword, getUserById } from "../../controllers/userController";
 import { PassportStrategy } from '../../interfaces/index';
 
 const localStrategy = new LocalStrategy(
@@ -13,28 +13,38 @@ const localStrategy = new LocalStrategy(
     return user
       ? done(null, user)
       : done(null, false, {
-          message: "Your login details are not valid. Please try again",
-        });
+        message: "Your login details are not valid. Please try again",
+      });
+  });
+
+declare module 'express' {
+  interface User {
+    id: number,
+    name: string,
+    email: string,
+    password: string,
   }
-);
+}
+
+// Declaration merging
 
 /*
 FIX ME (types) 😭
 */
-passport.serializeUser(function (user: any, done: any) {
+// Express.User is empty right now
+passport.serializeUser(function (user: Express.User, done: (err: any, id?: number) => void) {
+  // @ts-ignore- temporary but not final solution.
   done(null, user.id);
 });
 
 /*
 FIX ME (types) 😭
 */
-passport.deserializeUser(function (id: any, done: any) {
+passport.deserializeUser(function (id: any, done: (err: any, user?: Express.User | false | null) => void) {
   let user = getUserById(id);
-  if (user) {
-    done(null, user);
-  } else {
-    done({ message: "User not found" }, null);
-  }
+  return user
+    ? done(null, user)
+    : done({ message: "User not found" }, null)
 });
 
 const passportLocalStrategy: PassportStrategy = {
