@@ -48,5 +48,5 @@ app.use("/", indexRoute);
 app.use("/auth", authRoute);
 
 app.listen(port, () => {
-  console.log(`🚀 Server has started on port ${port}`);
+  console.log(`🚀 Server has started on port http://localhost:${port}`);
 });
